@@ -57,6 +57,11 @@
         <artifactId>lombok</artifactId>
         <version>1.18.46</version>
     </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
 <!-- 核心模块，提供LangChain4j的基础功能和API -->
     <dependency>
         <groupId>dev.langchain4j</groupId>
