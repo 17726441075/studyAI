@@ -1,0 +1,9 @@
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        api-key: sk-ws-H.EYMDPRL.XhIH.MEQCIDYUCccAnq5u6Df7hi23dNdb5J5UdJXQP3ixkfNWnPO8AiBq0tfSSlf_YRYDojBuczcFb9djr4X8jn3XSZls1EK0Ag
+        model-name: deepseek-v3.2
+      streaming-chat-model:  
+        api-key: sk-ws-H.EYMDPRL.XhIH.MEQCIDYUCccAnq5u6Df7hi23dNdb5J5UdJXQP3ixkfNWnPO8AiBq0tfSSlf_YRYDojBuczcFb9djr4X8jn3XSZls1EK0Ag
+        model-name: deepseek-v3.2
