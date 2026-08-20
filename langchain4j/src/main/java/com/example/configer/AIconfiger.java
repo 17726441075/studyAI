@@ -7,15 +7,17 @@ import dev.langchain4j.community.model.dashscope.QwenChatModel;
 import dev.langchain4j.community.model.dashscope.QwenStreamingChatModel;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.TokenStream;
+import dev.langchain4j.service.UserMessage;
 
 
 @Configuration
 public class AIconfiger {
     
     public interface AI {
-        String chat(String question);
-        TokenStream streamChat(String question) ;
+        String chat(@MemoryId Integer id,@UserMessage String question);
+        TokenStream streamChat(@MemoryId Integer id,@UserMessage String question) ;
     }
 
     @Bean
@@ -23,7 +25,7 @@ public class AIconfiger {
         return AiServices.builder(AI.class)
                          .chatModel(qwenChatModel)
                          .streamingChatModel(qwenStreamingChatModel)
-                         .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
+                         .chatMemoryProvider(id->MessageWindowChatMemory.builder().maxMessages(10).id(id).build())
                          .build() ;
     }
 

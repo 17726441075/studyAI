@@ -20,17 +20,17 @@ public class ChatMemoryController {
     @Resource
     private AIconfiger.AI ai ;
 
-     @RequestMapping("/chat/{question}")
-    public Object chat(@PathVariable String question){
+     @RequestMapping("/chat/{question}/{mid}")
+    public Object chat(@PathVariable("question") String question,@PathVariable("mid") Integer mid){
         System.out.println(question);
-        return ai.chat(question);
+        return ai.chat(mid,question);
     }
 
-    @RequestMapping(value =  "/streamchat/{question}",produces = "text/stream;charset=utf-8")
-    public Flux<String> streamchat(@PathVariable String question){
+    @RequestMapping(value =  "/streamchat/{question}/{mid}",produces = "text/stream;charset=utf-8")
+    public Flux<String> streamchat(@PathVariable("question")  String question,@PathVariable("mid") Integer mid){
         System.out.println(question);
         
-        TokenStream stream = ai.streamChat(question); 
+        TokenStream stream = ai.streamChat(mid,question); 
         return Flux.create(tmp->{
             stream.onPartialResponse(tmp::next)
                   .onCompleteResponse(res->tmp.complete())
