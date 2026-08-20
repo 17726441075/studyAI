@@ -6,7 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @SpringBootTest(classes = Main.class)
 public class ChatTest {
     
@@ -18,7 +20,7 @@ public class ChatTest {
     public void test1(){
         System.out.println("sssssssssssssdfdfsdfd");
         String res = dashScopeChatModel.call("你好") ;
-        System.out.println(res);        
+        log.info(res);
 
     }
 
