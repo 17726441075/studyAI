@@ -22,7 +22,7 @@ public class ChatController {
         return dashScopeModel.call(question) ;
     }
 
-    @RequestMapping(value = "/streamchat/{question}",produces = "text/stream;charset=utf-8")
+    @RequestMapping(value = "/streamchat/{question}",produces = "text/event-stream;charset=utf-8")
     public Flux<String> streamchat(@PathVariable String question){
         return dashScopeModel.stream(question) ;
     }
