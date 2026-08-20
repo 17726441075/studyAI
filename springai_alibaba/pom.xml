@@ -66,17 +66,10 @@
         <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
     </dependency>
-    <!-- 提供Spring Boot Starter支持，简化DashScope模型在Spring应用中的集成 -->
     <dependency>
-        <groupId>dev.langchain4j</groupId>
-        <artifactId>langchain4j-community-dashscope-spring-boot-starter</artifactId>
-        <version>1.9.1-beta17</version>
-    </dependency>
-    <!-- langchain4j核心依赖中含有ChatMemory -->
-    <dependency>
-        <groupId>dev.langchain4j</groupId>
-        <artifactId>langchain4j</artifactId>
-        <version>1.9.1</version>
+        <groupId>com.alibaba.cloud.ai</groupId>
+        <artifactId>spring-ai-alibaba-starter-dashscope</artifactId>
+        <version>1.1.2.3</version>
     </dependency>
  </dependencies> 
 </project>
