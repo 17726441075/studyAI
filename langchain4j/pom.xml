@@ -3,16 +3,95 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example</groupId>
   <artifactId>langchain4j</artifactId>
+  <version>1.0</version>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
-  <name>langchain4j</name>
-  <url>http://maven.apache.org</url>
-  <dependencies>
+  <properties>
+        <maven.compiler.release>25</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <langchain4j.version>1.9.1</langchain4j.version>
+  </properties>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.0</version>  
+    <relativePath/>
+  </parent>    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.46</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.example.APP</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+ <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-  </dependencies>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>1.18.46</version>
+    </dependency>
+<!-- 核心模块，提供LangChain4j的基础功能和API -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+    <!-- 提供与OpenAI模型集成的功能，支持调用OpenAI的API -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-open-ai</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+    <!-- 提供与Ollama模型集成的功能，支持本地大语言模型的调用 -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-ollama</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+    <!-- 提供Testcontainers的JUnit Jupiter扩展，用于容器化测试环境 -->
+    <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>junit-jupiter</artifactId>
+        <version>1.19.3</version>
+    </dependency>
+    <!-- 提供与阿里云DashScope模型集成的功能，支持调用DashScope的API -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-community-dashscope</artifactId>
+        <version>1.9.1-beta17</version>
+    </dependency>
+    <!-- 提供Spring Boot Starter支持，简化DashScope模型在Spring应用中的集成 -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-community-dashscope-spring-boot-starter</artifactId>
+        <version>1.9.1-beta17</version>
+    </dependency>
+ </dependencies> 
 </project>
