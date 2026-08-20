@@ -25,7 +25,7 @@ public class AIconfiger {
         return AiServices.builder(AI.class)
                          .chatModel(qwenChatModel)
                          .streamingChatModel(qwenStreamingChatModel)
-                         .chatMemoryProvider(id->MessageWindowChatMemory.builder().maxMessages(10).id(id).build())
+                         .chatMemoryProvider(id->new HashMapChatMemory(id.toString(), 10))
                          .build() ;
     }
 
