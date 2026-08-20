@@ -3,9 +3,10 @@ package com.example.configer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.example.service.ToolService;
+
 import dev.langchain4j.community.model.dashscope.QwenChatModel;
 import dev.langchain4j.community.model.dashscope.QwenStreamingChatModel;
-import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.service.AiServices;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.TokenStream;
@@ -21,8 +22,9 @@ public class AIconfiger {
     }
 
     @Bean
-    public AI assistant(QwenChatModel qwenChatModel,QwenStreamingChatModel qwenStreamingChatModel){
+    public AI assistant(QwenChatModel qwenChatModel,QwenStreamingChatModel qwenStreamingChatModel,ToolService toolService){
         return AiServices.builder(AI.class)
+                         .tools(toolService)
                          .chatModel(qwenChatModel)
                          .streamingChatModel(qwenStreamingChatModel)
                          .chatMemoryProvider(id->new HashMapChatMemory(id.toString(), 10))
