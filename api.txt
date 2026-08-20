@@ -1,0 +1,14 @@
+API Key
+sk-ws-H.EYMDPRL.XhIH.MEQCIDYUCccAnq5u6Df7hi23dNdb5J5UdJXQP3ixkfNWnPO8AiBq0tfSSlf_YRYDojBuczcFb9djr4X8jn3XSZls1EK0Ag
+
+
+API Host
+ws-unb6ehiw77dt9w5k.cn-beijing.maas.aliyuncs.com
+
+
+OpenAI 兼容地址
+https://ws-unb6ehiw77dt9w5k.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+
+
+DashScope
+https://ws-unb6ehiw77dt9w5k.cn-beijing.maas.aliyuncs.com/api/v1
