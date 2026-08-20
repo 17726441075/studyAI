@@ -31,28 +31,20 @@ public class LangChain4jController {
     public Flux<String> streamchat(@PathVariable String question){
         System.out.println(question);
         return Flux.create(tmp->{
-
             qwenStreamingChatModel.chat(question, new StreamingChatResponseHandler() {
-
                 @Override
                 public void onPartialResponse(String partialResponse){
                     tmp.next(partialResponse) ;
                 }
-
                 @Override
                 public void onCompleteResponse(ChatResponse arg0) {
                     tmp.complete(); 
                 }
-
                 @Override
                 public void onError(Throwable arg0) {
                     throw new UnsupportedOperationException("Unimplemented method 'onError'");
                 }
-                
             });
-
-
-
         }) ;
     }
 
