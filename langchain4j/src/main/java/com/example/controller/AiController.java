@@ -14,7 +14,6 @@ public class AiController {
     @Resource
     private QwenChatModel qwenChatModel ;
 
-
     @RequestMapping("/chat/{question}")
     public Object chat(@PathVariable String question){
         System.out.println(question);
