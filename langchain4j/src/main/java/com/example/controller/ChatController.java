@@ -13,7 +13,7 @@ import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/ai")
-public class LangChain4jController {
+public class ChatController {
 
     @Resource
     private QwenChatModel qwenChatModel ;
