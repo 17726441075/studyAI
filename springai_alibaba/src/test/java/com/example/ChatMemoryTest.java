@@ -12,18 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 
 import cn.hutool.core.util.IdUtil;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest(classes = Main.class)
 public class ChatMemoryTest {
     
-    @Resource
-    private DashScopeChatModel dashScopeChatModel ;
-
     @Test
-    public void test1(@Autowired DashScopeChatModel chatModel){
+    public void chatMemoryTest1(@Autowired DashScopeChatModel chatModel){
             // 构建一个ChatMemory对象用来存储对话的消息内容
             ChatMemory chatMemory = MessageWindowChatMemory.builder().build();
             String id = IdUtil.simpleUUID(); // 唯一标识符

@@ -3,6 +3,8 @@ package com.example.configer;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.alibaba.cloud.ai.memory.redis.JedisRedisChatMemoryRepository;
 
 
 @Configuration
@@ -47,6 +50,22 @@ public class AIconfiger {
         return ChatClient.builder(dashScopeChatModel)
                 .defaultSystem(render)
                 .build();
+    }
+
+    @Bean
+    public ChatMemory chatMemory(@Value("${spring.data.redis.host}") String host,
+                                 @Value("${spring.data.redis.port}") int port,
+                                 @Value("${spring.data.redis.password}") String password){
+        JedisRedisChatMemoryRepository redisChatMemoryRepository = JedisRedisChatMemoryRepository.builder()
+                                                                                                .host(host) // 添加reids的主机
+                                                                                                .port(port) // 添加redis的端口
+                                                                                                // .user 配置了用户的需要在这里添加用户名
+                                                                                                .password(password)
+                                                                                                .build();
+        return MessageWindowChatMemory.builder()
+                                    .maxMessages(10) // 最大消息数
+                                    .chatMemoryRepository(redisChatMemoryRepository)
+                                    .build();
     }
 
 }
