@@ -5,4 +5,8 @@ spring:
         options:
           model: qwen3-max
       api-key: sk-ws-H.EYMDPRL.XhIH.MEQCIDYUCccAnq5u6Df7hi23dNdb5J5UdJXQP3ixkfNWnPO8AiBq0tfSSlf_YRYDojBuczcFb9djr4X8jn3XSZls1EK0Ag
-       
+  data:
+    redis:
+    port: 6379 # reids的端口
+    host: localhost # redis的地址
+    password: 123456
