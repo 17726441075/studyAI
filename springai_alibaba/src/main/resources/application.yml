@@ -8,13 +8,37 @@ spring:
       embedding:
         options:
           model: qwen3.7-text-embedding
+    vectorstore:
+      milvus:
+        client:
+          host: localhost  # Milvus 服务器地址
+          port: 19530      # Milvus 服务器端口
+        #          username: "root"   # Milvus用户名
+        #          password: "milvus" # Milvus密码
+        database-name: "default"           # 数据库名称
+        collection-name: "vector_store"    # 集合名称
+        embedding-dimension: 1024          # 嵌入向量的维度，应与 embedding 模型输出维度一致
+        # 索引类型，可选值：ivf_flat, ivf_sq8, ivf_pq, hnsw, diskann, flat
+        # ivf_flat: 倒排文件平面索引，平衡了内存使用和搜索精度
+        # ivf_sq8: 倒排文件标量量化索引，节省内存但略有精度损失
+        # ivf_pq: 倒排文件产品量化索引，大幅节省内存，适合大规模数据
+        # hnsw: 分层导航小世界图索引，搜索速度快，适合高维向量
+        # diskann: 磁盘ANN索引，适合超大规模数据集
+        # flat: 平面索引，精确搜索但速度慢，适合小数据集
+        index-type: ivf_flat
+        # 度量类型，可选值：l2, ip, cosine
+        # l2: 欧几里得距离，适合计算向量间的真实距离
+        # ip: 内积，适合推荐系统等场景
+        # cosine: 余弦相似度，适合文本相似度计算
+        metric-type: cosine
+        initialize-schema: true  # 是否自动创建 schema，Milvus安装后内部其实是没有库的，需要通过这个自动初始化集合
     chat:
       memory:
         repository:
           jdbc:
             initialize-schema: always # 开启自动初始化表结构
             platform: mysql # 选择使用mysql的类型
-    # schema: 如果想要使用自定义的表结构，可以在这里将自己的sql文件路径配置上去        
+    # schema: 如果想要使用自定义的表结构，可以在这里将自己的sql文件路径配置上去            
   data:
     redis:
       port: 6379 # reids的端口
