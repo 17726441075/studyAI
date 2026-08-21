@@ -9,12 +9,12 @@ spring:
         options:
           model: qwen3.7-text-embedding
     chat:
-        memory:
-          repository:
-            jdbc:
-              initialize-schema: always # 开启自动初始化表结构
-              platform: mysql # 选择使用mysql的类型
-      # schema: 如果想要使用自定义的表结构，可以在这里将自己的sql文件路径配置上去        
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always # 开启自动初始化表结构
+            platform: mysql # 选择使用mysql的类型
+    # schema: 如果想要使用自定义的表结构，可以在这里将自己的sql文件路径配置上去        
   data:
     redis:
       port: 6379 # reids的端口
