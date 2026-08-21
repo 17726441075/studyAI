@@ -53,7 +53,7 @@ public class AIconfiger {
     }
 
     @Bean
-    public ChatMemory chatMemory(@Value("${spring.data.redis.host}") String host,
+    public ChatMemory redisChatMemory(@Value("${spring.data.redis.host}") String host,
                                  @Value("${spring.data.redis.port}") int port,
                                  @Value("${spring.data.redis.password}") String password){
         JedisRedisChatMemoryRepository redisChatMemoryRepository = JedisRedisChatMemoryRepository.builder()
