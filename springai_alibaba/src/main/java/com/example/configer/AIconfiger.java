@@ -4,20 +4,19 @@ import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 
-import jakarta.annotation.Resource;
-import lombok.RequiredArgsConstructor;
-
 
 @Configuration
-@RequiredArgsConstructor
 public class AIconfiger {
     
-    @Resource
+    @Autowired
     private DashScopeChatModel dashScopeChatModel ;
 
     @Bean
@@ -36,6 +35,18 @@ public class AIconfiger {
         return ChatClient.builder(dashScopeChatModel)
                 .defaultSystem(render)
                 .build() ;
+    }
+
+    
+    @Bean
+    public ChatClient promptTemplateResourceChatClient(@Value("classpath:prompt.yml")Resource resource){
+        String render = PromptTemplate.builder()
+                                      .resource(resource)
+                                      .build()
+                                      .render(Map.of("zhiye","C","part","C++")); 
+        return ChatClient.builder(dashScopeChatModel)
+                .defaultSystem(render)
+                .build();
     }
 
 }
