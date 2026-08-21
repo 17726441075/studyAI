@@ -1,10 +1,13 @@
 package com.example;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +142,29 @@ public class ChatMemoryTest {
                            .advisors(ad->ad.param(ChatMemory.CONVERSATION_ID, "advisors2"))
                            .call()
                            .content());
+    }
+
+    @Test
+    public void digestClientAdvisorChatMemoryTest(@Autowired ChatClient digestClient,@Autowired ChatMemory jdbcChatMemory,@Autowired ChatClient advisorChatClient){
+        ChatMemory chatMemory = jdbcChatMemory;
+        String key = "advisors1";
+        if (chatMemory.get(key).size() >= 5 ) {
+                // 使用digestClient将5条消息进行摘要
+                AssistantMessage assistantMessage = digestClient.prompt()
+                                                                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, key))
+                                                                .call()
+                                                                .chatResponse()
+                                                                .getResult()
+                                                                .getOutput();
+                chatMemory.clear(key);
+                chatMemory.add(key, assistantMessage);
+        }
+
+        log.info(advisorChatClient.prompt()
+                        .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, key))
+                        .user("请介绍一下我")
+                        .call()
+                        .content());
     }
 
 }
