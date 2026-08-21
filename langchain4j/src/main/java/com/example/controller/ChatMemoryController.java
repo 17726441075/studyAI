@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.configer.AIconfiger;
 
-import dev.langchain4j.model.chat.response.ChatResponse;
-import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
 import dev.langchain4j.service.TokenStream;
 import jakarta.annotation.Resource;
 import reactor.core.publisher.Flux;
