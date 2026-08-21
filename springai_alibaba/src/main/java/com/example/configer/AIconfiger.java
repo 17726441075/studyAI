@@ -120,4 +120,35 @@ public class AIconfiger {
                         .build();
     }
 
+    @Bean
+    public ChatClient piiChatClient(@Autowired DashScopeChatModel dashScopeChatModel) {  
+        return ChatClient.builder(dashScopeChatModel)
+                        .defaultSystem("""
+                                    你是PII检测器。只识别并替换文本中的个人敏感信息。
+                                    规则：
+                                    - 姓名 → [姓名]
+                                    - 邮箱 → [邮箱]
+                                    - 手机号 → [手机号]
+                                    - 身份证号 → [身份证]
+                                    - 地址 → [地址]
+                                    - 其他明显PII → [敏感信息]
+                                    - 输出只返回处理后的完整文本，不要解释。
+                                    """)
+                        .build();
+    }
+
+    @Bean
+    public ChatClient piiAdvisorChatClient(@Autowired JdbcChatMemoryRepository jdbcChatMemoryRepository,@Autowired PiiAdvisor piiAdvisor){
+        ChatMemory chatMemory = MessageWindowChatMemory.builder()
+                                                        .maxMessages(10) // 最大消息数
+                                                        .chatMemoryRepository(jdbcChatMemoryRepository)
+                                                        .build();
+        return ChatClient.builder(dashScopeChatModel)
+                .defaultAdvisors(
+                    // 使用PromptChatMemoryAdvisor，这个Advisor是专门用于适配ChatMemory对象的对话记忆拦截器
+                    PromptChatMemoryAdvisor.builder(chatMemory).build(),piiAdvisor
+                )
+                .build();
+    }
+
 }

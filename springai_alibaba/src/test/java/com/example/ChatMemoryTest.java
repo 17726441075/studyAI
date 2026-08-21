@@ -166,5 +166,15 @@ public class ChatMemoryTest {
                         .call()
                         .content());
     }
+    
+    @Test
+    public void piiAdvisorChatClientChatMemoryTest(@Autowired ChatClient piiAdvisorChatClient){
+        System.out.println(piiAdvisorChatClient.prompt()
+                                                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, "key1"))
+                                                .user("我的身份证号码是 83749279383729475 ，请问我的生日是多少")
+                                                .call()
+                                                .content());
+     
+    }
 
 }
