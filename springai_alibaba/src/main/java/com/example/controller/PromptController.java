@@ -20,4 +20,12 @@ public class PromptController {
         return promptChatClient.prompt().user(question).stream().content() ;
     }
 
+    @Resource
+    private ChatClient  promptTemplateChatClient;
+
+    @RequestMapping(value = "/streamchat2/{question}",produces = "text/stream;charset=utf-8")
+    public Flux<String> streamchat2(@PathVariable String question){
+        return promptTemplateChatClient.prompt().user(question).stream().content() ;
+    }
+
 }
