@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
+import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,6 +66,14 @@ public class AIconfiger {
         return MessageWindowChatMemory.builder()
                                     .maxMessages(10) // 最大消息数
                                     .chatMemoryRepository(redisChatMemoryRepository)
+                                    .build();
+    }
+
+    @Bean
+    public ChatMemory jdbcChatMemory(@Autowired JdbcChatMemoryRepository jdbcChatMemoryRepository){
+        return MessageWindowChatMemory.builder()
+                                    .maxMessages(10) // 最大消息数
+                                    .chatMemoryRepository(jdbcChatMemoryRepository)
                                     .build();
     }
 

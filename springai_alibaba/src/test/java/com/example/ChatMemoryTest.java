@@ -86,4 +86,39 @@ public class ChatMemoryTest {
             log.info(text2);
     }
 
+    @Test
+    public void jdbcChatMemoryTest(@Autowired ChatMemory jdbcChatMemory,@Autowired DashScopeChatModel chatModel){
+            // 构建一个ChatMemory对象用来存储对话的消息内容
+            ChatMemory chatMemory = jdbcChatMemory;
+            String id = IdUtil.simpleUUID(); // 唯一标识符
+            // 第一轮对话
+            // 使用唯一标识符对不同的对话进行隔离，将用户的消息存储在下来
+            chatMemory.add(id, new UserMessage("我36岁是一个java全栈工程师"));
+            String text = chatModel.call(
+                                        Prompt.builder()
+                                             .messages(chatMemory.get(id))   //在ChatMemory中将所有的消息都查询出来
+                                             .build()
+                                    )
+                                    .getResult()
+                                    .getOutput()    
+                                    .getText();
+            // 将AI返回的消息进程存储
+            chatMemory.add(id, new AssistantMessage(text));
+            log.info(text);
+            // 第二轮对话
+            // 将用户第二次的对话存储到ChatMemory中
+            chatMemory.add(id, new UserMessage("我的工作是什么"));
+            String text2 = chatModel.call(
+                                        Prompt.builder()
+                                        // 再次从ChatMemory中查找到所有存储的消息
+                                        .messages(chatMemory.get(id))
+                                        .build()
+                                    )
+                                    .getResult()
+                                    .getOutput()
+                                    .getText();
+            chatMemory.add(id, new AssistantMessage(text2));                        
+            log.info(text2);
+    }
+
 }
