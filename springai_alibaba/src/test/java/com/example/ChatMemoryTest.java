@@ -1,6 +1,7 @@
 package com.example;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage;
@@ -119,6 +120,25 @@ public class ChatMemoryTest {
                                     .getText();
             chatMemory.add(id, new AssistantMessage(text2));                        
             log.info(text2);
+    }
+
+    @Test
+    public void advisorChatMemoryTest(@Autowired ChatClient advisorChatClient){
+            log.info(advisorChatClient.prompt()
+                           .user("我是厨师")
+                           .advisors(ad->ad.param(ChatMemory.CONVERSATION_ID, "advisors1"))
+                           .call()
+                           .content());
+            log.info(advisorChatClient.prompt()
+                           .user("我的工作是什么")
+                           .advisors(ad->ad.param(ChatMemory.CONVERSATION_ID, "advisors1"))
+                           .call()
+                           .content());
+            log.info(advisorChatClient.prompt()
+                           .user("我的工作是什么")
+                           .advisors(ad->ad.param(ChatMemory.CONVERSATION_ID, "advisors2"))
+                           .call()
+                           .content());
     }
 
 }

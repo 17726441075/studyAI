@@ -3,6 +3,7 @@ package com.example.configer;
 import java.util.Map;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
@@ -75,6 +76,20 @@ public class AIconfiger {
                                     .maxMessages(10) // 最大消息数
                                     .chatMemoryRepository(jdbcChatMemoryRepository)
                                     .build();
+    }
+
+    @Bean
+    public ChatClient advisorChatClient(@Autowired JdbcChatMemoryRepository jdbcChatMemoryRepository){
+        ChatMemory chatMemory = MessageWindowChatMemory.builder()
+                                                        .maxMessages(10) // 最大消息数
+                                                        .chatMemoryRepository(jdbcChatMemoryRepository)
+                                                        .build();
+        return ChatClient.builder(dashScopeChatModel)
+                .defaultAdvisors(
+                    // 使用PromptChatMemoryAdvisor，这个Advisor是专门用于适配ChatMemory对象的对话记忆拦截器
+                    PromptChatMemoryAdvisor.builder(chatMemory).build()
+                )
+                .build();
     }
 
 }
