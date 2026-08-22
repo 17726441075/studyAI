@@ -14,7 +14,7 @@ spring:
       chat:
         options:
           model: qwen-plus # 聊天模型
-      api-key: ${DASHSCOPE_KEY} # 密钥
+      api-key: sk-ws-H.EYMDPRL.XhIH.MEQCIDYUCccAnq5u6Df7hi23dNdb5J5UdJXQP3ixkfNWnPO8AiBq0tfSSlf_YRYDojBuczcFb9djr4X8jn3XSZls1EK0Ag # 密钥
       embedding:
         options:
           model: text-embedding-v4 # 向量模型

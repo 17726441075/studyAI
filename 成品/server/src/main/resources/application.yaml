@@ -8,13 +8,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123456
-    url: jdbc:mysql://localhost:3306/chat-ai?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/ai?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true
   ai:
     dashscope:
       chat:
         options:
           model: qwen-plus # 聊天模型
-      api-key: sk-15c181728f72434587d60634cc37ba6f # 密钥
+      api-key: sk-ws-H.EYMDPRL.XhIH.MEQCIDYUCccAnq5u6Df7hi23dNdb5J5UdJXQP3ixkfNWnPO8AiBq0tfSSlf_YRYDojBuczcFb9djr4X8jn3XSZls1EK0Ag # 密钥
       embedding:
         options:
           model: text-embedding-v4 # 向量模型
