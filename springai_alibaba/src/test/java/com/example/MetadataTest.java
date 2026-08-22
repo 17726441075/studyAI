@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MetadataTest {
     
     @Test
-    public void test01(@Autowired VectorStore milvusVectorStore) {
+    public void metadataTest(@Autowired VectorStore milvusVectorStore) {
         List<String> batchTexts = new ArrayList<>();
         batchTexts.add("【2025新款】智能保温杯 316不锈钢 温度显示 24小时保温 白色 500ml");
         batchTexts.add("无线蓝牙耳机 半入耳式 降噪高清通话 续航40小时 适配安卓/苹果");
@@ -49,7 +49,7 @@ public class MetadataTest {
     }
 
     @Test
-    public void test01WithMap(@Autowired VectorStore milvusVectorStore) {
+    public void moreMetadataTest(@Autowired VectorStore milvusVectorStore) {
         String text = "【2025新款】智能保温杯 316不锈钢";
         
         // 创建包含多个元数据的Map
@@ -68,7 +68,7 @@ public class MetadataTest {
     }
 
     @Test
-    public void test02(@Autowired VectorStore milvusVectorStore) {
+    public void queryTest(@Autowired VectorStore milvusVectorStore) {
         String query = "无线蓝牙耳机";
         
         List<Document> documents = milvusVectorStore.similaritySearch(
