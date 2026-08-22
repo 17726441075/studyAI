@@ -24,6 +24,7 @@ import com.alibaba.cloud.ai.advisor.RetrievalRerankAdvisor;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.dashscope.rerank.DashScopeRerankModel;
 import com.alibaba.cloud.ai.memory.redis.JedisRedisChatMemoryRepository;
+import com.example.service.ToolService;
 
 
 
@@ -202,6 +203,13 @@ public class AIconfiger {
                                                                             .build())
                                                                 )
                             .build();
+    }
+
+    @Bean
+    public ChatClient toolChatClient(@Autowired ToolService toolService) {
+        return ChatClient.builder(dashScopeChatModel)
+                .defaultTools(toolService)    // 注册@Tool注解的工具
+                .build();
     }
 
 }
