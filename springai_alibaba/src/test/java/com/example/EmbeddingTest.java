@@ -41,7 +41,7 @@ public class EmbeddingTest {
 
     // 存储
     @Test
-    public void test01(@Autowired VectorStore milvusVectorStore) {
+    public void milvusVectorStoreTest(@Autowired VectorStore milvusVectorStore) {
         List<String> batchTexts = new ArrayList<>();
         batchTexts.add("【2025新款】智能保温杯 316不锈钢 温度显示 24小时保温 白色 500ml");
         batchTexts.add("无线蓝牙耳机 半入耳式 降噪高清通话 续航40小时 适配安卓/苹果");
@@ -56,4 +56,12 @@ public class EmbeddingTest {
         milvusVectorStore.write(documents);
     }
 
+    // 检索
+    @Test
+    public void milvusVectorStoreTest2(@Autowired VectorStore milvusVectorStore) {
+        List<Document> similaritySearch = milvusVectorStore.similaritySearch("机械键盘"); 
+        similaritySearch.forEach(doc->{
+            log.info(doc.toString());
+        });
+    }
 }   
