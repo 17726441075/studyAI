@@ -83,4 +83,35 @@ public class MetadataTest {
             log.info(document.toString());
     }
 
+    @Test
+    public void moreQueryTest(@Autowired VectorStore milvusVectorStore) {
+        // 场景1：多条件AND组合
+        String query1 = "智能保温杯";
+        List<Document> result1 = milvusVectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query(query1)
+                        .filterExpression("source=='商品' AND category=='杯具'")
+                        .build()
+        );
+        log.info(result1.toString());
+
+        // 场景2：OR组合
+        String query2 = "键盘";
+        List<Document> result2 = milvusVectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query(query2)
+                        .filterExpression("source=='商品' OR source=='说明'")
+                        .build()
+        );
+        log.info(result2.toString());
+        
+        // 场景3：数值比较
+        List<Document> result3 = milvusVectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query("电动牙刷")
+                        .filterExpression("price > 50")  // 假设有price字段
+                        .build()
+        );
+        log.info(result3.toString());
+    }
 }
