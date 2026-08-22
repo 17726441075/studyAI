@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,6 +65,22 @@ public class MetadataTest {
                 .build();
         
         milvusVectorStore.write(List.of(document));
+    }
+
+    @Test
+    public void test02(@Autowired VectorStore milvusVectorStore) {
+        String query = "无线蓝牙耳机";
+        
+        List<Document> documents = milvusVectorStore.similaritySearch(
+                SearchRequest.builder()
+                        .query(query)                              // 查询文本
+                        .filterExpression("source=='商品'")       // 元数据过滤条件
+                        .topK(10)                                 // 返回前10条结果
+                        .build()
+        );
+        
+        for (Document document : documents) 
+            log.info(document.toString());
     }
 
 }
