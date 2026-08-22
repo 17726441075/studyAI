@@ -12,6 +12,7 @@ import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
 import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
 import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
 import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
+import com.alibaba.cloud.ai.advisor.RetrievalRerankAdvisor;
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
+import com.alibaba.cloud.ai.dashscope.rerank.DashScopeRerankModel;
 import com.alibaba.cloud.ai.memory.redis.JedisRedisChatMemoryRepository;
 
 
@@ -161,6 +164,9 @@ public class AIconfiger {
     @Autowired
     private VectorStore milvusVectorStore;
 
+    @Autowired
+    private DashScopeRerankModel dashScopeRerankModel;
+
     @Bean
     public ChatClient retrievalChatClient() {
         return ChatClient.builder(dashScopeChatModel)
@@ -188,8 +194,13 @@ public class AIconfiger {
                                                                             )
                                                                             .build()
                                                                 )
-                                                                .build()
-                            )
+                                                                .build(),
+                                                                new RetrievalRerankAdvisor(milvusVectorStore, dashScopeRerankModel,
+                                                                    SearchRequest.builder()
+                                                                            .topK(200)
+                                                                            .similarityThreshold(.4)
+                                                                            .build())
+                                                                )
                             .build();
     }
 

@@ -8,6 +8,9 @@ spring:
       embedding:
         options:
           model: qwen3.7-text-embedding
+      rerank:
+        options:
+          model: qwen3-rerank    
     vectorstore:
       milvus:
         client:
