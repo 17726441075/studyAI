@@ -8,6 +8,11 @@ import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.rag.advisor.RetrievalAugmentationAdvisor;
+import org.springframework.ai.rag.generation.augmentation.ContextualQueryAugmenter;
+import org.springframework.ai.rag.preretrieval.query.transformation.RewriteQueryTransformer;
+import org.springframework.ai.rag.retrieval.search.VectorStoreDocumentRetriever;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +21,7 @@ import org.springframework.core.io.Resource;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatModel;
 import com.alibaba.cloud.ai.memory.redis.JedisRedisChatMemoryRepository;
+
 
 
 @Configuration
@@ -149,6 +155,42 @@ public class AIconfiger {
                     PromptChatMemoryAdvisor.builder(chatMemory).build(),piiAdvisor
                 )
                 .build();
+    }
+
+
+    @Autowired
+    private VectorStore milvusVectorStore;
+
+    @Bean
+    public ChatClient retrievalChatClient() {
+        return ChatClient.builder(dashScopeChatModel)
+                            .defaultAdvisors(
+                                    RetrievalAugmentationAdvisor.builder()
+                                                                .queryTransformers(
+                                                                    RewriteQueryTransformer.builder()
+                                                                            .chatClientBuilder(ChatClient.builder(dashScopeChatModel))
+                                                                            .targetSearchSystem("你是一个词汇清理的专家，主要工作是将用户的模糊问题提取出专业的词汇，以提高向量检索的精度，注意不要有任何多余的解释")
+                                                                            .build()
+                                                                )
+                                                                .documentRetriever(
+                                                                    VectorStoreDocumentRetriever.builder()
+                                                                            .similarityThreshold(.5)  
+                                                                            .vectorStore(milvusVectorStore)
+                                                                            .build()
+                                                                )
+                                                                .queryAugmenter(
+                                                                    ContextualQueryAugmenter.builder()
+                                                                            .allowEmptyContext(false)
+                                                                            .emptyContextPromptTemplate(
+                                                                                PromptTemplate.builder()
+                                                                                        .template("根据您的问题，系统未能找到相关的文档信息。为了更好地帮助您，请提供更多详细信息或尝试重新表述您的问题。")
+                                                                                        .build()
+                                                                            )
+                                                                            .build()
+                                                                )
+                                                                .build()
+                            )
+                            .build();
     }
 
 }

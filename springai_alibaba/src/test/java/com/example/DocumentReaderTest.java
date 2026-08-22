@@ -1,6 +1,5 @@
 package com.example;
 
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.ai.document.Document;
