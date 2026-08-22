@@ -2,6 +2,7 @@ package com.example.service;
 
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,4 +21,25 @@ public class ToolService {
     public String getWeather(@ToolParam(description = "要查询的城市名称（如北京、上海、东京、纽约）") String city) {
         return String.format("【注解方式】%s 当前天气：晴，温度26℃，湿度60%%", city);
     }
+
+
+    /**
+     * 用户信息查询工具
+     * 敏感操作，需要管理员权限
+     *
+     * @PreAuthorize 注解：
+     * - hasRole('ADMIN')：仅允许具有ADMIN角色的用户调用
+     * - 在方法执行前进行权限校验
+     *
+     * 如果当前用户不是管理员，会抛出AccessDeniedException
+     */
+    @Tool(name = "get_user_info", description = "根据用户名称查询对应的用户信息")
+    @PreAuthorize("hasRole('ADMIN')")  // 权限校验注解
+    public String getUserInfo(@ToolParam(description = "要查询的用户名称") String username) {
+        return String.format(
+                "【用户信息】用户名：%s，邮箱：%s@company.com，手机号：138****8901",
+                username, username
+        );
+    }
+
 }
